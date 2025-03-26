@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maaf Kar Do Ji</title>
+    <title>For The Love of My Life</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap');
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: 'Montserrat', sans-serif;
             background: linear-gradient(135deg, #ffcce6, #ffb3d9);
@@ -21,7 +20,7 @@
             overflow-x: hidden;
             min-height: 100vh;
         }
-
+        
         .loading-screen {
             position: fixed;
             top: 0;
@@ -36,14 +35,14 @@
             z-index: 1000;
             transition: opacity 1s ease;
         }
-
+        
         .loading-text {
             font-family: 'Dancing Script', cursive;
             font-size: 2rem;
             color: #8b0040;
             margin-top: 20px;
         }
-
+        
         .loader {
             width: 50px;
             height: 50px;
@@ -52,7 +51,7 @@
             border-top-color: transparent;
             animation: spin 1s linear infinite;
         }
-
+        
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -62,18 +61,18 @@
             opacity: 0;
             transition: opacity 1s ease;
         }
-
+        
         h1 {
             font-family: 'Dancing Script', cursive;
-            font-size: 3.5rem;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
             margin: 40px 0;
             color: #8b0040;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             opacity: 0;
             transform: translateY(30px);
             animation: fadeIn 1s forwards 0.5s;
         }
-
+        
         .heart {
             font-size: 2rem;
             color: #ff4d88;
@@ -81,16 +80,17 @@
             animation: pulse 1.5s infinite;
             margin: 20px 0;
         }
-
+        
         .animation-section {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             position: relative;
+            padding: 20px 0;
         }
-
+        
         .flying-hearts {
             position: absolute;
             width: 100%;
@@ -98,7 +98,7 @@
             pointer-events: none;
             z-index: -1;
         }
-
+        
         .flying-heart {
             position: absolute;
             opacity: 0;
@@ -106,14 +106,15 @@
             color: #ff4d88;
             animation: fly 6s linear infinite;
         }
-
+        
         .message {
             background-color: rgba(255, 255, 255, 0.85);
             border-radius: 15px;
             padding: 30px;
             margin: 30px 0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             max-width: 600px;
+            width: 90%;
             opacity: 0;
             transform: scale(0.9);
             transition: all 0.8s ease;
@@ -122,7 +123,7 @@
             z-index: 1;
             backdrop-filter: blur(2px);
         }
-
+        
         .btn {
             background: linear-gradient(45deg, #ff4d88, #ff1a75);
             color: white;
@@ -139,54 +140,56 @@
             transform: translateY(20px);
             animation: fadeIn 1s forwards 2s;
         }
-
+        
         .btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(255, 77, 136, 0.6);
         }
-
+        
         .envelope-container {
             display: none;
             perspective: 1000px;
             margin: 50px auto;
             max-width: 600px;
+            width: 90%;
         }
-
+        
         .envelope {
             background: linear-gradient(135deg, #ffb3d9, #ff99cc);
-            width: 300px;
+            width: 100%;
+            max-width: 300px;
             height: 200px;
             margin: 0 auto;
             position: relative;
             border-radius: 5px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             transform-style: preserve-3d;
             transition: all 0.8s ease;
             cursor: pointer;
         }
-
+        
         .envelope:before {
             content: '';
             position: absolute;
             top: 0;
             width: 0;
             height: 0;
-            border-left: 150px solid transparent;
-            border-right: 150px solid transparent;
+            border-left: 50% solid transparent;
+            border-right: 50% solid transparent;
             border-top: 100px solid #ff80bf;
             transform-origin: top;
             transform: rotateX(0deg);
             transition: all 0.8s ease;
             z-index: 3;
         }
-
+        
         .envelope.open:before {
             transform: rotateX(180deg);
         }
-
+        
         .letter {
             position: absolute;
-            width: 280px;
+            width: calc(100% - 20px);
             height: 180px;
             background: white;
             left: 10px;
@@ -194,12 +197,12 @@
             transition: all 0.8s ease;
             z-index: 2;
             padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
             transform: translateY(0);
             border-radius: 3px;
             overflow: hidden;
         }
-
+        
         .letter-content {
             opacity: 0;
             transition: opacity 0.5s ease 0.8s;
@@ -208,25 +211,25 @@
             overflow-y: auto;
             padding-right: 10px;
         }
-
+        
         .envelope.open .letter {
             transform: translateY(-100px);
             height: 300px;
         }
-
+        
         .envelope.open .letter-content {
             opacity: 1;
         }
-
+        
         .signature {
             font-family: 'Dancing Script', cursive;
-            font-size: 1.8rem;
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
             margin-top: 20px;
             text-align: right;
             position: relative;
             display: inline-block;
         }
-
+        
         .signature::after {
             content: '';
             position: absolute;
@@ -237,30 +240,38 @@
             background: #ff4d88;
             transition: width 1s ease 2s;
         }
-
+        
         .envelope.open .signature::after {
             width: 100%;
         }
-
-        /* New Video Section */
+        
+        /* Video Section */
         .video-section {
             margin: 50px auto;
             max-width: 600px;
+            width: 90%;
             display: none;
         }
-
+        
+        .video-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(1.8rem, 4vw, 2.2rem);
+            color: #8b0040;
+            margin-bottom: 20px;
+        }
+        
         .video-container {
             position: relative;
-            padding-bottom: 56.25%;
-            /* 16:9 aspect ratio */
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
             height: 0;
             overflow: hidden;
             border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
             animation: floatBorder 8s ease-in-out infinite;
             border: 5px solid #ff4d88;
+            background: #000;
         }
-
+        
         .video-container iframe {
             position: absolute;
             top: 0;
@@ -269,7 +280,35 @@
             height: 100%;
             border: none;
         }
-
+        
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 77, 136, 0.8);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+        
+        .play-button i {
+            color: white;
+            font-size: 30px;
+            margin-left: 5px;
+        }
+        
+        .play-button:hover {
+            background: rgba(255, 77, 136, 1);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        
         /* Confetti */
         .confetti-container {
             position: fixed;
@@ -281,7 +320,7 @@
             z-index: 1000;
             display: none;
         }
-
+        
         .confetti {
             position: absolute;
             width: 10px;
@@ -289,7 +328,7 @@
             background-color: #f00;
             opacity: 0;
         }
-
+        
         /* Animations */
         @keyframes fadeIn {
             to {
@@ -297,175 +336,113 @@
                 transform: translateY(0);
             }
         }
-
+        
         @keyframes pulse {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.3);
-            }
-
-            100% {
-                transform: scale(1);
-            }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
         }
-
+        
         @keyframes fly {
             0% {
                 transform: translateY(100vh) translateX(0);
                 opacity: 0;
             }
-
             10% {
                 opacity: 1;
             }
-
             90% {
                 opacity: 1;
             }
-
             100% {
                 transform: translateY(-100px) translateX(100px);
                 opacity: 0;
             }
         }
-
+        
         @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+            to { transform: rotate(360deg); }
         }
-
+        
         @keyframes floatBorder {
-
-            0%,
-            100% {
+            0%, 100% {
                 transform: translateY(0) rotate(0deg);
-                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.2);
             }
-
             50% {
                 transform: translateY(-20px) rotate(2deg);
-                box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            .message {
-                padding: 20px;
-                margin: 20px 0;
-            }
-
-            .envelope {
-                width: 250px;
-                height: 170px;
-            }
-
-            .envelope:before {
-                border-left: 125px solid transparent;
-                border-right: 125px solid transparent;
-                border-top: 85px solid #ff80bf;
-            }
-
-            .letter {
-                width: 230px;
-            }
-
-            .btn {
-                padding: 12px 25px;
-                font-size: 1rem;
-            }
-
-            .video-section {
-                margin: 30px auto;
-                width: 90%;
+                box-shadow: 0 30px 60px rgba(0,0,0,0.3);
             }
         }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-
 <body>
     <div class="loading-screen" id="loading-screen">
         <div class="loader"></div>
         <div class="loading-text">Loading My Love...</div>
     </div>
-
+    
     <div class="confetti-container" id="confetti-container"></div>
-
+    
     <div class="container" id="main-container">
         <div class="animation-section">
             <h1>For The One I Love</h1>
-
+            
             <div class="message" id="message1">
                 <p>Every moment without your smile feels incomplete...</p>
                 <div class="heart">❤️</div>
             </div>
-
+            
             <div class="message" id="message2">
                 <p>I've been thinking about you constantly...</p>
                 <div class="heart">❤️</div>
             </div>
-
+            
             <div class="message" id="message3">
                 <p>And I realize how much I need to say...</p>
                 <div class="heart">❤️</div>
             </div>
-
-            <button class="btn" id="reveal-btn">Ekhane tap koro please</button>
+            
+            <button class="btn" id="reveal-btn">Click Here For My Heart</button>
         </div>
-
+        
         <div class="envelope-container" id="envelope-container">
             <div class="envelope" id="envelope">
                 <div class="letter">
                     <div class="letter-content">
-                        <h3>Beautiful,</h3>
-                        <p>I know I've upset you, and for that, I'm truly sorry. The thought of seeing you hurt because
-                            of me breaks my heart. You mean more to me than words can express, and I never want to be
-                            the reason for your sadness.</p>
-
-                        <p>Every moment with you feels like a gift—your smile lights up my world, your laugh is my
-                            favorite melody, and your love is the strength that keeps me going. Losing even a little of
-                            that warmth because of my mistakes is unbearable.</p>
-
-                        <p>I may not be perfect, but my love for you is. I promise to learn from this, to be better, and
-                            to cherish you the way you deserve. You're my happiness, my peace, and my greatest blessing.
-                            Please give me the chance to make it right.</p>
-
-                        <p>Let me wipe those tears away and replace them with the love and joy you bring into my life. I
-                            can't imagine my story without you in it—will you forgive me and let us grow stronger from
-                            this?</p>
-
-                        <div class="signature">Forever yours,<br>Moon</div>
+                        <h3>My Love,</h3>
+                        <p>I know I've upset you, and for that, I'm truly sorry. The thought of seeing you hurt because of me breaks my heart. You mean more to me than words can express, and I never want to be the reason for your sadness.</p>
+                        
+                        <p>Every moment with you feels like a gift—your smile lights up my world, your laugh is my favorite melody, and your love is the strength that keeps me going. Losing even a little of that warmth because of my mistakes is unbearable.</p>
+                        
+                        <p>I may not be perfect, but my love for you is. I promise to learn from this, to be better, and to cherish you the way you deserve. You're my happiness, my peace, and my greatest blessing. Please give me the chance to make it right.</p>
+                        
+                        <p>Let me wipe those tears away and replace them with the love and joy you bring into my life. I can't imagine my story without you in it—will you forgive me and let us grow stronger from this?</p>
+                        
+                        <div class="signature">Forever yours,<br>[Your Name]</div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- New Video Section -->
+        
+        <!-- Video Section -->
         <div class="video-section" id="video-section">
-            <h2 style="margin-bottom: 20px; font-family: 'Dancing Script'; color: #8b0040;">Our Special Song</h2>
+            <h2 class="video-title">Our Special Song</h2>
             <div class="video-container">
-                <!-- Replace with your YouTube embed code -->
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/4adZ7AguVcw?si=klxRWHftE6eFRzkd"
-                    title="YouTube video player" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <!-- Your YouTube Video Embedded Here -->
+                <iframe id="yt-video" src="https://www.youtube.com/embed/4adZ7AguVcw?enablejsapi=1&rel=0&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <div class="play-button" id="play-button">
+                    <i class="fas fa-play"></i>
+                </div>
             </div>
         </div>
     </div>
-
+    
     <div class="flying-hearts" id="flying-hearts"></div>
-
+    
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Simulate loading
             setTimeout(() => {
                 document.getElementById('loading-screen').style.opacity = '0';
@@ -474,11 +451,11 @@
                     document.getElementById('loading-screen').style.display = 'none';
                 }, 1000);
             }, 2000);
-
+            
             // Create flying hearts
             const flyingHeartsContainer = document.getElementById('flying-hearts');
             const heartIcons = ['❤️', '💖', '💘', '💝', '💗', '💓', '💞'];
-
+            
             for (let i = 0; i < 20; i++) {
                 const heart = document.createElement('div');
                 heart.className = 'flying-heart';
@@ -488,15 +465,15 @@
                 heart.style.fontSize = (Math.random() * 1 + 1) + 'rem';
                 flyingHeartsContainer.appendChild(heart);
             }
-
+            
             // Auto-scroll to messages
             function autoScroll() {
                 const messages = document.querySelectorAll('.message');
                 let index = 0;
-
+                
                 const scrollInterval = setInterval(() => {
                     if (index < messages.length) {
-                        messages[index].scrollIntoView({ behavior: 'smooth' });
+                        messages[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
                         messages[index].classList.add('visible');
                         index++;
                     } else {
@@ -505,26 +482,40 @@
                     }
                 }, 1500);
             }
-
+            
             // Start auto-scroll after loading
             setTimeout(autoScroll, 2500);
-
+            
+            // YouTube video setup
+            const playButton = document.getElementById('play-button');
+            const youtubeIframe = document.getElementById('yt-video');
+            
+            // Hide play button when video starts
+            youtubeIframe.addEventListener('click', function() {
+                playButton.style.display = 'none';
+            });
+            
+            // Also hide play button if video autoplays
+            setTimeout(() => {
+                playButton.style.display = 'none';
+            }, 3000);
+            
             // Envelope interaction
             const revealBtn = document.getElementById('reveal-btn');
             const envelopeContainer = document.getElementById('envelope-container');
             const envelope = document.getElementById('envelope');
             const confettiContainer = document.getElementById('confetti-container');
             const videoSection = document.getElementById('video-section');
-
-            revealBtn.addEventListener('click', function () {
+            
+            revealBtn.addEventListener('click', function() {
                 // Scroll to envelope
                 envelopeContainer.style.display = 'block';
-                envelopeContainer.scrollIntoView({ behavior: 'smooth' });
-
+                envelopeContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
                 // Open envelope after a delay
                 setTimeout(() => {
                     envelope.classList.add('open');
-
+                    
                     // Create confetti explosion
                     createConfetti();
                     confettiContainer.style.display = 'block';
@@ -532,14 +523,14 @@
                         confettiContainer.style.display = 'none';
                         confettiContainer.innerHTML = '';
                     }, 3000);
-
+                    
                     // Show video section after envelope opens
                     setTimeout(() => {
                         videoSection.style.display = 'block';
-                        videoSection.scrollIntoView({ behavior: 'smooth' });
+                        videoSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }, 1500);
                 }, 1000);
-
+                
                 // Create floating hearts animation
                 const floatInterval = setInterval(() => {
                     const heart = document.createElement('div');
@@ -551,31 +542,31 @@
                     heart.style.position = 'fixed';
                     heart.style.fontSize = (Math.random() * 1 + 1) + 'rem';
                     document.body.appendChild(heart);
-
+                    
                     // Remove heart after animation
                     setTimeout(() => {
                         heart.remove();
                     }, 3000);
                 }, 300);
-
+                
                 // Stop after 10 hearts
                 setTimeout(() => {
                     clearInterval(floatInterval);
                 }, 3000);
             });
-
+            
             // Click envelope to close (optional)
-            envelope.addEventListener('click', function () {
+            envelope.addEventListener('click', function() {
                 if (envelope.classList.contains('open')) {
                     envelope.classList.remove('open');
                 }
             });
-
+            
             // Confetti function
             function createConfetti() {
                 const colors = ['#ff4d88', '#4da6ff', '#ffcc00', '#66ff66', '#cc99ff'];
                 const confettiCount = 100;
-
+                
                 for (let i = 0; i < confettiCount; i++) {
                     const confetti = document.createElement('div');
                     confetti.className = 'confetti';
@@ -584,23 +575,23 @@
                     confetti.style.top = '-10px';
                     confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
                     confetti.style.opacity = '1';
-
+                    
                     // Random shape
                     if (Math.random() > 0.5) {
                         confetti.style.borderRadius = '50%';
                     }
-
+                    
                     // Random size
                     const size = Math.random() * 10 + 5;
                     confetti.style.width = size + 'px';
                     confetti.style.height = size + 'px';
-
+                    
                     // Animation
                     confetti.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
                     confetti.style.animationDelay = Math.random() * 0.5 + 's';
-
+                    
                     confettiContainer.appendChild(confetti);
-
+                    
                     // Keyframes for falling animation
                     const style = document.createElement('style');
                     style.innerHTML = `
@@ -617,5 +608,4 @@
         });
     </script>
 </body>
-
 </html>
